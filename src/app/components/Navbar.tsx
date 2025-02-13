@@ -1,7 +1,9 @@
-import Link from "next/link";
 
 const Navbar = () => {
-  return 
-    
+  return (
+    <section>
+      <h1>hello world</h1>
+    </section>
+  )
 };
 export default Navbar;
