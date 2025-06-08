@@ -13,43 +13,47 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id Int @id @default(autoincrement())
-  fullName String @db.VarChar(100)
-  email String @unique
-  password String  @db.VarChar(100)
-  phone String @unique
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  fullName    String    @db.VarChar(100)
+  email       String    @unique
+  password    String    @db.VarChar(100)
+  phone       String    @unique
+  createdAt   DateTime  @default(now())
+  Apartment   Apartment @relation(fields: [ApartmentId], references: [id])
+  ApartmentId Int
 }
 
 model Apartment {
-  id            Int           @id @default(autoincrement())
-  title         String        @db.VarChar(200)
-  details       String        @db.VarChar(100)
-  createdAt     DateTime      @default(now())
-  price         Decimal       @db.Decimal(10,2)
-  imageUrl      String        @db.VarChar(200)
-  bedrooms      Int
-  bathrooms     Int
-  isPetAllowed  Boolean
-  propertyType  PropertyType  @relation(fields: [propertyTypeId], references: [id])
+  id             Int          @id @default(autoincrement())
+  title          String       @db.VarChar(200)
+  details        String       @db.VarChar(100)
+  createdAt      DateTime     @default(now())
+  price          Decimal      @db.Decimal(10, 2)
+  imageUrl       String       @db.VarChar(200)
+  bedrooms       Int
+  bathrooms      Int
+  isPetAllowed   Boolean
+  propertyType   PropertyType @relation(fields: [propertyTypeId], references: [id])
   propertyTypeId Int
-  location      Location      @relation(fields: [locationId], references: [id])
+  location       Location     @relation(fields: [locationId], references: [id])
   locationId     Int
+  User           User[]
 }
 
 model PropertyType {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique @db.VarChar(50)
+  id         Int         @id @default(autoincrement())
+  name       String      @unique @db.VarChar(50)
   apartments Apartment[]
 }
 
 model Location {
-  id        Int     @id @default(autoincrement())
-  city      String  @db.VarChar(100)
-  state     String? @db.VarChar(100)
-  country   String? @db.VarChar(100)
-  latitude  Float?
-  longitude Float?
+  id         Int         @id @default(autoincrement())
+  city       String      @db.VarChar(100)
+  state      String?     @db.VarChar(100)
+  country    String?     @db.VarChar(100)
+  latitude   Float?
+  longitude  Float?
   apartments Apartment[]
 }

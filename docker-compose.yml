@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: palmera-rentals
-      POSTGRES_PASSWORD: jkjd#kk%ql24sd$
+      POSTGRES_PASSWORD: jkjd%23kk%25ql24sd%24
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
