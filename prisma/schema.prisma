@@ -15,12 +15,14 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  fullName  String   @db.VarChar(100)
-  email     String   @unique
-  password  String   @db.VarChar(100)
-  phone     String   @unique
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  fullName    String    @db.VarChar(100)
+  email       String    @unique
+  password    String    @db.VarChar(100)
+  phone       String    @unique
+  createdAt   DateTime  @default(now())
+  Apartment   Apartment @relation(fields: [ApartmentId], references: [id])
+  ApartmentId Int
 }
 
 model Apartment {
@@ -37,6 +39,7 @@ model Apartment {
   propertyTypeId Int
   location       Location     @relation(fields: [locationId], references: [id])
   locationId     Int
+  User           User[]
 }
 
 model PropertyType {
