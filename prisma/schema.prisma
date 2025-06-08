@@ -19,11 +19,37 @@ model User {
   email String @unique
   password String  @db.VarChar(100)
   phone String @unique
-  createdAt DateTime 
+  createdAt DateTime @default(now())
 }
 
 model Apartment {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  id            Int           @id @default(autoincrement())
+  title         String        @db.VarChar(200)
+  details       String        @db.VarChar(100)
+  createdAt     DateTime      @default(now())
+  price         Decimal       @db.Decimal(10,2)
+  imageUrl      String        @db.VarChar(200)
+  bedrooms      Int
+  bathrooms     Int
+  isPetAllowed  Boolean
+  propertyType  PropertyType  @relation(fields: [propertyTypeId], references: [id])
+  propertyTypeId Int
+  location      Location      @relation(fields: [locationId], references: [id])
+  locationId     Int
+}
 
+model PropertyType {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique @db.VarChar(50)
+  apartments Apartment[]
+}
+
+model Location {
+  id        Int     @id @default(autoincrement())
+  city      String  @db.VarChar(100)
+  state     String? @db.VarChar(100)
+  country   String? @db.VarChar(100)
+  latitude  Float?
+  longitude Float?
+  apartments Apartment[]
 }
