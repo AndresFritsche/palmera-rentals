@@ -15,15 +15,15 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  fullName    String    @db.VarChar(100)
-  email       String    @unique
-  password    String    @db.VarChar(100)
-  phone       String    @unique
-  createdAt   DateTime  @default(now())
-  Apartment   Apartment @relation(fields: [ApartmentId], references: [id])
-  ApartmentId Int
+  id          Int         @id @default(autoincrement())
+  fullName    String      @db.VarChar(100)
+  email       String      @unique
+  password    String      @db.VarChar(100)
+  phone       String      @unique
+  createdAt   DateTime    @default(now())
+  apartments  Apartment[] 
 }
+
 
 model Apartment {
   id             Int          @id @default(autoincrement())
@@ -31,7 +31,7 @@ model Apartment {
   details        String       @db.VarChar(100)
   createdAt      DateTime     @default(now())
   price          Decimal      @db.Decimal(10, 2)
-  imageUrl       String       @db.VarChar(200)
+  imageUrl       String?      @db.VarChar(200)
   bedrooms       Int
   bathrooms      Int
   isPetAllowed   Boolean
@@ -39,8 +39,10 @@ model Apartment {
   propertyTypeId Int
   location       Location     @relation(fields: [locationId], references: [id])
   locationId     Int
-  User           User[]
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int
 }
+
 
 model PropertyType {
   id         Int         @id @default(autoincrement())
