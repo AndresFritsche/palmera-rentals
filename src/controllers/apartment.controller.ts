@@ -38,12 +38,10 @@ export const createApartment = async (
     if (!newApartment) {
       res.status(400).json({ message: "could not create apartment" });
     }
-    res
-      .status(201)
-      .json({
-        newApartment: newApartment,
-        message: "Apartment created succesfully",
-      });
+    res.status(201).json({
+      newApartment: newApartment,
+      message: "Apartment created succesfully",
+    });
   } catch (error) {
     console.error("Error creating apartment:", error);
     res.status(500).json({ message: "Internal server error", error });
@@ -115,12 +113,22 @@ export const updateApartment = async (req: Request, res: Response) => {
         userId,
       },
     });
-    if(!updatedApartment) {
-      res.status(400).json({message: 'please enter valid data'})
+    if (!updatedApartment) {
+      res.status(400).json({ message: "please enter valid data" });
     }
-    res.status(200).json({updatedApartment})
-
+    res.status(200).json({ updatedApartment });
   } catch (error) {
     console.error(error);
   }
 };
+
+export const deleteApartment = async (req:Request, res:Response) => {
+  const { id } = req.params
+  const _deleteApartment = await prisma.apartment.delete({
+    where : { id: Number(id) }
+  })
+
+  if(!_deleteApartment){
+    res.status(400).json({message: 'error deleting apartment'})
+  }
+}
