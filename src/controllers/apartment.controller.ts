@@ -1,3 +1,4 @@
+
 import { PrismaClient } from "./../../generated/prisma";
 import { Request, Response } from "express";
 
@@ -48,8 +49,28 @@ export const createApartment = async (req: Request, res: Response):Promise<void>
 export const findApartments = async (req: Request, res:Response): Promise<void> => {
   try {
     const apartments = await prisma.apartment.findMany()
-    res.status(200).json({apartments: {apartments}})
+    if (!apartments){
+      res.status(404).json({message: 'apartments not found'})
+    }
+    res.status(200).json({apartments})
   } catch (error) {
     console.error(error)
   }
 }
+
+export const findApartmentsById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const apartment = await prisma.apartment.findFirstOrThrow({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.status(200).json({ apartment });
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ message: 'Apartment not found or an error occurred.' });
+  }
+};
