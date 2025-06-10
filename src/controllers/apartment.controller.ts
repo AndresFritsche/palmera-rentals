@@ -121,6 +121,6 @@ export const updateApartment = async (req: Request, res: Response) => {
     res.status(200).json({updatedApartment})
 
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
