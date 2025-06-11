@@ -16,10 +16,10 @@ datasource db {
 
 model User {
   id          Int         @id @default(autoincrement())
-  fullName    String      @db.VarChar(100)
-  email       String      @unique
+  fullName    String?     @db.VarChar(100)
+  email       String      @db.VarChar(50) @unique
   password    String      @db.VarChar(100)
-  phone       String      @unique
+  phone       String ?    @unique
   createdAt   DateTime    @default(now())
   apartments  Apartment[] 
 }
