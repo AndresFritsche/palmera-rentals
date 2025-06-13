@@ -131,5 +131,5 @@ export const deleteApartment = async (req:Request, res:Response) => {
   if(!_deleteApartment){
     res.status(400).json({message: 'error deleting apartment'})
   }
-  res.status(400).json({message: 'the apartment has been deleted'})
+  res.status(200).json({message: 'the apartment has been deleted'})
 }
