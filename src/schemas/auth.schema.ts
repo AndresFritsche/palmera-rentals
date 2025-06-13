@@ -36,4 +36,10 @@ export const registerSchema = z.object({
     .email("Invalid email format")
     .min(5, "Minimum 5 characters")
     .max(50, "Maximum 50 characters"),
+    
+  phone: z
+    .string()
+    .min(1, 'Please enter at least 1 character')
+    .regex(/\d/, "Please enter at least one digit")
+
 });

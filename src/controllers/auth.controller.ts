@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { ZodError } from "zod";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "./../../generated/prisma";
+import  jwt  from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -24,7 +25,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { fullName , email, password } = registerSchema.parse(req.body);
+    const { fullName , email, password, phone } = registerSchema.parse(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
 
 
@@ -33,16 +34,22 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         fullName,
         email,
         password: hashedPassword,
+        phone
       },
     });
 
     console.log("New user created:", newUser);
 
+    // Token
+    const token = jwt.sign({id: newUser.id}, process.env.TOKEN_SECRET || 'TOKEN TEST')
+    console.log(token)
+
+
     if (!newUser) {
       res.status(500).json({ message: "User creation failed" });
     }
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.header('auth-token', token).status(201).json({ message: "User registered successfully", newUser: newUser });
   } catch (error) {
     if (error instanceof ZodError) {
       res.status(400).json({
