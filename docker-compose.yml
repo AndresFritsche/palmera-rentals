@@ -2,16 +2,31 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:16
-    container_name: palmera-rentals
+    image: postgres
+    container_name: palmera-db
     restart: always
     environment:
-      POSTGRES_USER: palmera-rentals
+      POSTGRES_USER: palmera
       POSTGRES_PASSWORD: jkjd%23kk%25ql24sd%24
+      POSTGRES_DB: palmera_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  app:
+    build: .
+    container_name: palmera-app
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: postgres://palmera:jkjd%23kk%25ql24sd%24@postgres:5432/palmera_db
+    command: npm run dev
 
 volumes:
   postgres_data:
